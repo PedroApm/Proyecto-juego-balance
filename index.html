@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,8 +9,96 @@
 </head>
 <body>
 
-  <script type="module" src="js/supabase.js"></script>
-  <script type="module" src="js/scene.js"></script>
-  <script type="module" src="js/game.js"></script>
+  <!-- Marcador -->
+  <div id="marcador">
+    <span id="conteo-left">LEFT: 0</span>
+    <span id="desplazamiento">⚖ 0px</span>
+    <span id="conteo-right">RIGHT: 0</span>
+  </div>
+
+  <!-- Pantalla de ingreso -->
+  <div id="pantalla-ingreso">
+    <div class="card-ingreso">
+      <h1>Tug of War XR</h1>
+      <input type="text" id="input-alias" placeholder="Tu alias..." maxlength="20" />
+      <button id="btn-entrar">Entrar</button>
+    </div>
+  </div>
+
+  <!-- Selector de lado -->
+  <div id="selector-lado" class="oculto">
+    <p id="bienvenida"></p>
+    <div class="botones-lado">
+      <button id="btn-left" class="btn-lado btn-left">◀ LEFT</button>
+      <button id="btn-right" class="btn-lado btn-right">RIGHT ▶</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import {
+      registrarJugador,
+      cambiarLado,
+      obtenerConteo,
+      calcularDesplazamiento,
+      suscribirCambios
+    } from './js/game.js'
+
+    const pantallaIngreso = document.getElementById('pantalla-ingreso')
+    const selectorLado = document.getElementById('selector-lado')
+    const inputAlias = document.getElementById('input-alias')
+    const btnEntrar = document.getElementById('btn-entrar')
+    const btnLeft = document.getElementById('btn-left')
+    const btnRight = document.getElementById('btn-right')
+    const conteoLeft = document.getElementById('conteo-left')
+    const conteoRight = document.getElementById('conteo-right')
+    const desplazamientoEl = document.getElementById('desplazamiento')
+    const bienvenida = document.getElementById('bienvenida')
+
+    async function actualizarMarcador() {
+      const { izquierda, derecha } = await obtenerConteo()
+      conteoLeft.textContent = `LEFT: ${izquierda}`
+      conteoRight.textContent = `RIGHT: ${derecha}`
+      const d = calcularDesplazamiento(izquierda, derecha)
+      desplazamientoEl.textContent = `⚖ ${d > 0 ? '+' : ''}${d}px`
+      desplazamientoEl.style.color = d === 0 ? '#fff' : d > 0 ? '#4af' : '#f84'
+    }
+
+    btnEntrar.addEventListener('click', async () => {
+      const alias = inputAlias.value.trim()
+      if (!alias) return
+
+      btnEntrar.disabled = true
+      btnEntrar.textContent = 'Entrando...'
+
+      try {
+        await registrarJugador(alias, 'LEFT')
+        pantallaIngreso.classList.add('oculto')
+        selectorLado.classList.remove('oculto')
+        bienvenida.textContent = `Hola, ${alias}! Elige tu lado:`
+        btnLeft.classList.add('activo')
+        await actualizarMarcador()
+      } catch (e) {
+        console.error(e)
+        btnEntrar.disabled = false
+        btnEntrar.textContent = 'Entrar'
+      }
+    })
+
+    inputAlias.addEventListener('keydown', e => {
+      if (e.key === 'Enter') btnEntrar.click()
+    })
+
+    async function elegirLado(lado) {
+      btnLeft.classList.toggle('activo', lado === 'LEFT')
+      btnRight.classList.toggle('activo', lado === 'RIGHT')
+      await cambiarLado(lado)
+    }
+
+    btnLeft.addEventListener('click', () => elegirLado('LEFT'))
+    btnRight.addEventListener('click', () => elegirLado('RIGHT'))
+
+    suscribirCambios(actualizarMarcador)
+    actualizarMarcador()
+  </script>
 </body>
 </html>
