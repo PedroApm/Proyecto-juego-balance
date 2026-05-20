@@ -1,274 +1,407 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tug of War XR</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-  <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tug of War XR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 </head>
 <body>
 
-  <!-- ══ HUD 2D ══ -->
-  <div id="marcador">
-    <div class="marcador-lado marcador-izq">
-      <span class="marcador-label">LEFT</span>
-      <span class="marcador-num" id="conteo-left">0</span>
-    </div>
-    <div class="marcador-centro">
-      <span id="desplazamiento-icono">⚖</span>
-      <span id="desplazamiento-val">0</span>
-    </div>
-    <div class="marcador-lado marcador-der">
-      <span class="marcador-num" id="conteo-right">0</span>
-      <span class="marcador-label">RIGHT</span>
-    </div>
-  </div>
+  <!-- ══ HUD 2D ══ -->
+  <div id="marcador">
+    <div class="marcador-lado marcador-izq">
+      <span class="marcador-label">LEFT</span>
+      <span class="marcador-num" id="conteo-left">0</span>
+    </div>
+    <div class="marcador-centro">
+      <span id="timer-display" class="timer">–:––</span>
+      <div class="balance-row">
+        <span id="desplazamiento-icono">⚖️</span>
+        <span id="desplazamiento-val">0</span>
+      </div>
+    </div>
+    <div class="marcador-lado marcador-der">
+      <span class="marcador-num" id="conteo-right">0</span>
+      <span class="marcador-label">RIGHT</span>
+    </div>
+  </div>
 
-  <!-- ══ Pantalla de ingreso ══ -->
-  <div id="pantalla-ingreso">
-    <div class="card-ingreso">
-      <div class="card-glow"></div>
-      <h1 class="titulo-juego">TUG OF WAR <span>XR</span></h1>
-      <p class="subtitulo">Elige tu lado y desequilibra la cuerda</p>
-      <div class="input-group">
-        <input type="text" id="input-alias" placeholder="Tu alias..." maxlength="20" autocomplete="off" />
-      </div>
-      <button id="btn-entrar">
-        <span>Entrar al campo</span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-      </button>
-      <p id="error-msg" class="error-msg oculto"></p>
-    </div>
-  </div>
+  <!-- Status bar -->
+  <div id="status-bar">
+    <span id="status-texto">Conectando...</span>
+  </div>
 
-  <!-- ══ Selector de lado ══ -->
-  <div id="selector-lado" class="oculto">
-    <p id="bienvenida"></p>
-    <div class="botones-lado">
-      <button id="btn-left"  class="btn-lado btn-left">
-        <span class="btn-icono">◀</span>
-        <span class="btn-texto">LEFT</span>
-        <span class="btn-sub" id="sub-left">0 jugadores</span>
-      </button>
-      <div class="vs-divider">VS</div>
-      <button id="btn-right" class="btn-lado btn-right">
-        <span class="btn-texto">RIGHT</span>
-        <span class="btn-icono">▶</span>
-        <span class="btn-sub" id="sub-right">0 jugadores</span>
-      </button>
-    </div>
-  </div>
+  <!-- ══ Pantalla de ingreso ══ -->
+  <div id="pantalla-ingreso">
+    <div class="card-ingreso">
+      <div class="card-glow"></div>
+      <h1 class="titulo-juego">TUG OF WAR <span>XR</span></h1>
+      <p class="subtitulo">Elige tu lado y desequilibra la cuerda</p>
+      <div class="input-group">
+        <input type="text" id="input-alias" placeholder="Tu alias..." maxlength="20" autocomplete="off" />
+      </div>
+      <button id="btn-entrar">
+        <span>Entrar al campo</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+      <p id="error-msg" class="error-msg oculto"></p>
+    </div>
+  </div>
 
-  <!-- ══════════════════════════════════════
-       ESCENA A-FRAME
-  ══════════════════════════════════════ -->
-  <a-scene
-    id="escena-xr"
-    background="color: #050510"
-    renderer="antialias: true; colorManagement: true"
-    vr-mode-ui="enabled: true"
-  >
-    <a-assets>
-      <audio id="audio-ambient" src="assets/sounds/ambient.mp3" preload="auto"></audio>
-      <audio id="audio-tension" src="assets/sounds/tension.mp3" preload="auto"></audio>
-    </a-assets>
+  <!-- ══ Selector de lado ══ -->
+  <div id="selector-lado" class="oculto">
+    <p id="bienvenida"></p>
+    <div class="botones-lado">
+      <button id="btn-left"  class="btn-lado btn-left">
+        <span class="btn-icono">◀️</span>
+        <span class="btn-texto">LEFT</span>
+        <span class="btn-sub" id="sub-left">0 jugadores</span>
+      </button>
+      <div class="vs-divider">VS</div>
+      <button id="btn-right" class="btn-lado btn-right">
+        <span class="btn-texto">RIGHT</span>
+        <span class="btn-icono">▶️</span>
+        <span class="btn-sub" id="sub-right">0 jugadores</span>
+      </button>
+    </div>
+  </div>
 
-    <!-- Sonidos posicionados -->
-    <a-entity id="sonido-left"  position="-4 1.5 -4"
-      sound="src: #audio-ambient; autoplay: true; loop: true; volume: 0.3"></a-entity>
-    <a-entity id="sonido-right" position=" 4 1.5 -4"
-      sound="src: #audio-ambient; autoplay: true; loop: true; volume: 0.3"></a-entity>
+  <!-- ══ Overlay Ganador ══ -->
+  <div id="overlay-ganador" class="oculto">
+    <div class="ganador-card">
+      <div class="ganador-emoji" id="ganador-emoji">🏆</div>
+      <h2 class="ganador-titulo" id="ganador-titulo">¡Fin!</h2>
+      <p class="ganador-subtitulo" id="ganador-subtitulo"></p>
+      <button id="btn-nueva-partida" class="btn-nueva">Nueva partida</button>
+    </div>
+  </div>
 
-    <!-- Entorno -->
-    <a-entity environment="preset: forest; groundColor: #0d0d20; grid: none; fog: 0.5; skyType: gradient; skyColor: #050510; horizonColor: #1a0a30"></a-entity>
+  <!-- ══════════════════════════════════════
+       ESCENA A-FRAME — LLANURA PLANA
+  ══════════════════════════════════════ -->
+  <a-scene
+    id="escena-xr"
+    fog="type: linear; color: #b8dba8; near: 12; far: 22"
+    renderer="antialias: true; colorManagement: true"
+    vr-mode-ui="enabled: true"
+  >
+    <a-assets>
+      <audio id="audio-ambient" src="assets/sounds/ambient.mp3" preload="auto"></audio>
+      <audio id="audio-tension" src="assets/sounds/tension.mp3" preload="auto"></audio>
+    </a-assets>
 
-    <!-- Suelo -->
-    <a-plane position="0 0 -4" rotation="-90 0 0" width="40" height="30"
-      color="#0d0d20" roughness="1" metalness="0"></a-plane>
+    <!-- Sonidos posicionados -->
+    <a-entity id="sonido-left"  position="-4 1.5 -3"
+      sound="src: #audio-ambient; autoplay: true; loop: true; volume: 0.3"></a-entity>
+    <a-entity id="sonido-right" position=" 4 1.5 -3"
+      sound="src: #audio-ambient; autoplay: true; loop: true; volume: 0.3"></a-entity>
 
-    <!-- Línea central en el suelo -->
-    <a-box position="0 0.01 -4" width="0.04" height="0.01" depth="12"
-      color="#ffffff" opacity="0.15"></a-box>
+    <!-- Cielo degradado -->
+    <a-sky color="#87ceeb"></a-sky>
 
-    <!-- Punto de equilibrio FIJO -->
-    <a-sphere id="punto-equilibrio" position="0 1.5 -4"
-      radius="0.2" color="#ffffff"
-      emissive="#6666ff" emissive-intensity="0.8"
-      animation="property: scale; from: 1 1 1; to: 1.2 1.2 1.2;
-        dir: alternate; loop: true; dur: 1200; easing: easeInOutSine">
-    </a-sphere>
-    <a-light type="point" id="luz-equilibrio" position="0 1.5 -4"
-      color="#8888ff" intensity="0.6" distance="3"></a-light>
+    <!-- Suelo — llanura plana verde -->
+    <a-plane position="0 0 -5" rotation="-90 0 0"
+      width="50" height="40"
+      color="#4a8c3f" roughness="0.95" metalness="0"></a-plane>
 
-    <!-- Cuerda / barra principal -->
-    <a-cylinder id="cuerda" position="0 1.5 -4"
-      radius="0.07" height="5" rotation="0 0 90"
-      color="#d4a96a" roughness="0.7" metalness="0.1">
-    </a-cylinder>
+    <!-- Línea central -->
+    <a-box position="0 0.01 -3" width="0.05" height="0.01" depth="10"
+      color="#ffffff" opacity="0.2"></a-box>
 
-    <!-- Extremo izquierdo -->
-    <a-sphere id="extremo-left" position="-2.5 1.5 -4"
-      radius="0.14" color="#4aaeff"
-      emissive="#4aaeff" emissive-intensity="0.6"
-      animation="property: scale; from: 1 1 1; to: 1.15 1.15 1.15;
-        dir: alternate; loop: true; dur: 1500; easing: easeInOutSine">
-    </a-sphere>
-    <a-light type="point" position="-2.5 1.5 -4"
-      color="#4aaeff" intensity="0.5" distance="2.5"></a-light>
+    <!-- Punto de equilibrio FIJO -->
+    <a-sphere id="punto-equilibrio" position="0 1.5 -3"
+      radius="0.2" color="#ffffff"
+      emissive="#8888ff" emissive-intensity="0.7"
+      animation="property: scale; from: 1 1 1; to: 1.2 1.2 1.2;
+        dir: alternate; loop: true; dur: 1200; easing: easeInOutSine">
+    </a-sphere>
+    <a-light type="point" position="0 1.5 -3" color="#aaaaff" intensity="0.5" distance="3"></a-light>
 
-    <!-- Extremo derecho -->
-    <a-sphere id="extremo-right" position="2.5 1.5 -4"
-      radius="0.14" color="#ff8844"
-      emissive="#ff8844" emissive-intensity="0.6"
-      animation="property: scale; from: 1 1 1; to: 1.15 1.15 1.15;
-        dir: alternate; loop: true; dur: 1800; easing: easeInOutSine">
-    </a-sphere>
-    <a-light type="point" position="2.5 1.5 -4"
-      color="#ff8844" intensity="0.5" distance="2.5"></a-light>
+    <!-- CUERDA — más grande (height=8) -->
+    <a-cylinder id="cuerda" position="0 1.5 -3"
+      radius="0.09" height="8" rotation="0 0 90"
+      color="#d4a96a" roughness="0.7" metalness="0.1">
+    </a-cylinder>
 
-    <!-- Etiquetas extremos -->
-    <a-text id="texto-left-3d"  value="LEFT"  position="-2.5 2.2 -4"
-      align="center" color="#4aaeff" scale="1.4 1.4 1.4"></a-text>
-    <a-text id="texto-right-3d" value="RIGHT" position=" 2.5 2.2 -4"
-      align="center" color="#ff8844" scale="1.4 1.4 1.4"></a-text>
+    <!-- Extremo izquierdo -->
+    <a-sphere id="extremo-left" position="-4 1.5 -3"
+      radius="0.16" color="#4aaeff"
+      emissive="#4aaeff" emissive-intensity="0.6"
+      animation="property: scale; from: 1 1 1; to: 1.15 1.15 1.15;
+        dir: alternate; loop: true; dur: 1500; easing: easeInOutSine">
+    </a-sphere>
+    <a-light type="point" position="-4 1.5 -3" color="#4aaeff" intensity="0.5" distance="2.5"></a-light>
 
-    <!-- Marcador 3D de scores -->
-    <a-text id="marcador-left-3d"  value="LEFT&#10;0"  position="-4.5 3.5 -6"
-      align="center" color="#4aaeff" scale="2 2 2" width="2"></a-text>
-    <a-text id="marcador-right-3d" value="RIGHT&#10;0" position=" 4.5 3.5 -6"
-      align="center" color="#ff8844" scale="2 2 2" width="2"></a-text>
+    <!-- Extremo derecho -->
+    <a-sphere id="extremo-right" position="4 1.5 -3"
+      radius="0.16" color="#ff8844"
+      emissive="#ff8844" emissive-intensity="0.6"
+      animation="property: scale; from: 1 1 1; to: 1.15 1.15 1.15;
+        dir: alternate; loop: true; dur: 1800; easing: easeInOutSine">
+    </a-sphere>
+    <a-light type="point" position="4 1.5 -3" color="#ff8844" intensity="0.5" distance="2.5"></a-light>
 
-    <!-- Poste central -->
-    <a-cylinder position="0 0.75 -4" radius="0.05" height="1.5" color="#444"
-      roughness="0.9"></a-cylinder>
+    <!-- Etiquetas extremos -->
+    <a-text id="texto-left-3d"  value="LEFT"  position="-4 2.15 -3"
+      align="center" color="#4aaeff" scale="1.4 1.4 1.4"></a-text>
+    <a-text id="texto-right-3d" value="RIGHT" position=" 4 2.15 -3"
+      align="center" color="#ff8844" scale="1.4 1.4 1.4"></a-text>
 
-    <!-- Contenedores de figuras -->
-    <a-entity id="jugadores-left"></a-entity>
-    <a-entity id="jugadores-right"></a-entity>
+    <!-- Marcador 3D scores -->
+    <a-text id="marcador-left-3d"  value="LEFT&#10;0"  position="-6 3.4 -5"
+      align="center" color="#4aaeff" scale="2 2 2" width="2"></a-text>
+    <a-text id="marcador-right-3d" value="RIGHT&#10;0" position=" 6 3.4 -5"
+      align="center" color="#ff8844" scale="2 2 2" width="2"></a-text>
 
-    <!-- Cámara -->
-    <a-entity position="0 1.65 2.5">
-      <a-camera look-controls wasd-controls>
-        <a-cursor color="#ffffff" opacity="0.6"
-          animation__click="property: scale; startEvents: click;
-            from: 0.1 0.1 0.1; to: 1 1 1; dur: 150">
-        </a-cursor>
-      </a-camera>
-    </a-entity>
+    <!-- Poste central -->
+    <a-cylinder position="0 0.75 -3" radius="0.05" height="1.5" color="#555"
+      roughness="0.9"></a-cylinder>
 
-    <!-- Iluminación -->
-    <a-light type="ambient"     color="#223" intensity="0.7"></a-light>
-    <a-light type="directional" position="3 6 2" intensity="0.8" color="#eeeeff"></a-light>
-    <a-light type="directional" position="-3 4 -6" intensity="0.3" color="#334455"></a-light>
+    <!-- Figuras jugadores -->
+    <a-entity id="jugadores-left"></a-entity>
+    <a-entity id="jugadores-right"></a-entity>
 
-  </a-scene>
+    <!-- Cámara — más cerca -->
+    <a-entity position="0 1.6 0">
+      <a-camera look-controls wasd-controls fov="80">
+        <a-cursor color="#ffffff" opacity="0.6"></a-cursor>
+      </a-camera>
+    </a-entity>
 
-  <!-- ══ Lógica principal ══ -->
-  <script type="module">
-    import {
-      registrarJugador,
-      cambiarLado,
-      obtenerConteo,
-      calcularDesplazamiento,
-      suscribirCambios
-    } from './js/game.js'
+    <!-- Iluminación -->
+    <a-light type="ambient"     color="#aaccaa" intensity="0.8"></a-light>
+    <a-light type="directional" position="3 8 3"  intensity="1.0" color="#fffde8"></a-light>
+    <a-light type="directional" position="-3 5 -5" intensity="0.3" color="#c8e8ff"></a-light>
 
-    import { actualizarCuerda, actualizarJugadoresVisuales } from './js/scene.js'
+  </a-scene>
 
-    // Elementos del DOM
-    const pantallaIngreso  = document.getElementById('pantalla-ingreso')
-    const selectorLado     = document.getElementById('selector-lado')
-    const inputAlias       = document.getElementById('input-alias')
-    const btnEntrar        = document.getElementById('btn-entrar')
-    const btnLeft          = document.getElementById('btn-left')
-    const btnRight         = document.getElementById('btn-right')
-    const conteoLeftEl     = document.getElementById('conteo-left')
-    const conteoRightEl    = document.getElementById('conteo-right')
-    const desplVal         = document.getElementById('desplazamiento-val')
-    const desplIcono       = document.getElementById('desplazamiento-icono')
-    const bienvenida       = document.getElementById('bienvenida')
-    const subLeft          = document.getElementById('sub-left')
-    const subRight         = document.getElementById('sub-right')
+  <!-- ══ Lógica principal ══ -->
+  <script type="module">
+    import {
+      registrarJugador, cambiarLado, obtenerJugadores,
+      calcularDesplazamiento, calcularEstadoPartida,
+      suscribirCambios, reiniciarJuego, getJugadorId
+    } from './js/game.js'
 
-    async function actualizarTodo() {
-      try {
-        const { izquierda, derecha } = await obtenerConteo()
-        const d = calcularDesplazamiento(izquierda, derecha)
+    import { actualizarCuerda, actualizarJugadoresVisuales } from './js/scene.js'
 
-        conteoLeftEl.textContent  = izquierda
-        conteoRightEl.textContent = derecha
-        desplVal.textContent = `${d > 0 ? '+' : ''}${d}px`
-        desplVal.className = d === 0 ? '' : d > 0 ? 'dom-left' : 'dom-right'
-        desplIcono.style.transform = `rotate(${d / 3}deg)`
+    // ── Refs DOM ──
+    const pantallaIngreso  = document.getElementById('pantalla-ingreso')
+    const selectorLado     = document.getElementById('selector-lado')
+    const inputAlias       = document.getElementById('input-alias')
+    const btnEntrar        = document.getElementById('btn-entrar')
+    const btnLeft          = document.getElementById('btn-left')
+    const btnRight         = document.getElementById('btn-right')
+    const conteoLeftEl     = document.getElementById('conteo-left')
+    const conteoRightEl    = document.getElementById('conteo-right')
+    const desplVal         = document.getElementById('desplazamiento-val')
+    const desplIcono       = document.getElementById('desplazamiento-icono')
+    const bienvenida       = document.getElementById('bienvenida')
+    const subLeft          = document.getElementById('sub-left')
+    const subRight         = document.getElementById('sub-right')
+    const timerEl          = document.getElementById('timer-display')
+    const statusEl         = document.getElementById('status-texto')
+    const overlayGanador   = document.getElementById('overlay-ganador')
+    const ganadorTitulo    = document.getElementById('ganador-titulo')
+    const ganadorSubtitulo = document.getElementById('ganador-subtitulo')
+    const ganadorEmoji     = document.getElementById('ganador-emoji')
+    const btnNuevaPartida  = document.getElementById('btn-nueva-partida')
 
-        subLeft.textContent  = `${izquierda} jugador${izquierda !== 1 ? 'es' : ''}`
-        subRight.textContent = `${derecha} jugador${derecha !== 1 ? 'es' : ''}`
+    // ── Estado local ──
+    let miRegistrado = false
+    let gameEstado   = 'esperando'
+    let gameStartMs  = null
+    let timerInterval = null
 
-        actualizarCuerda(d)
-        actualizarJugadoresVisuales(izquierda, derecha)
-      } catch (e) {
-        console.error('Error actualizando estado:', e)
-      }
-    }
+    function formatTimer(seg) {
+      const m = Math.floor(seg / 60)
+      const s = seg % 60
+      return ${m}:${String(s).padStart(2, '0')}
+    }
 
-    // Ingreso
-    btnEntrar.addEventListener('click', async () => {
-      const alias = inputAlias.value.trim()
-      if (!alias) {
-        inputAlias.classList.add('shake')
-        setTimeout(() => inputAlias.classList.remove('shake'), 400)
-        return
-      }
-      btnEntrar.disabled = true
-      btnEntrar.querySelector('span').textContent = 'Entrando...'
-      try {
-        await registrarJugador(alias, 'LEFT')
-        pantallaIngreso.classList.add('salida')
-        setTimeout(() => pantallaIngreso.classList.add('oculto'), 400)
-        selectorLado.classList.remove('oculto')
-        selectorLado.classList.add('entrada')
-        bienvenida.textContent = `Bienvenido, ${alias}`
-        btnLeft.classList.add('activo')
-        await actualizarTodo()
-      } catch (e) {
-        console.error(e)
-        btnEntrar.disabled = false
-        btnEntrar.querySelector('span').textContent = 'Entrar al campo'
-        const errMsg = document.getElementById('error-msg')
-        errMsg.textContent = e?.message || 'Error al conectar con Supabase'
-        errMsg.classList.remove('oculto')
-        setTimeout(() => errMsg.classList.add('oculto'), 6000)
-      }
-    })
+    function tickTimer() {
+      if (!gameStartMs) return
+      const remaining = Math.ceil((90000 - (Date.now() - gameStartMs)) / 1000)
+      if (remaining <= 0) {
+        clearInterval(timerInterval)
+        timerInterval = null
+        timerEl.textContent = '0:00'
+        timerEl.classList.remove('urgente')
+        actualizarTodo()
+        return
+      }
+      timerEl.textContent = formatTimer(remaining)
+      timerEl.classList.toggle('urgente', remaining <= 10)
+    }
 
-    inputAlias.addEventListener('keydown', e => { if (e.key === 'Enter') btnEntrar.click() })
+    function mostrarGanador(ganador) {
+      overlayGanador.classList.remove('oculto')
+      if (ganador === 'EMPATE') {
+        ganadorEmoji.textContent = '🤝'
+        ganadorTitulo.textContent = '¡Empate!'
+        ganadorSubtitulo.textContent = 'Ambos lados tienen los mismos jugadores'
+      } else {
+        ganadorEmoji.textContent = ganador === 'LEFT' ? '◀️🏆' : '🏆▶️'
+        ganadorTitulo.textContent = ¡Gana ${ganador}!
+        ganadorSubtitulo.textContent = El lado ${ganador} domina la cuerda
+        ganadorTitulo.style.color = ganador === 'LEFT' ? '#4aaeff' : '#ff8844'
+      }
+    }
 
-    // Cambio de lado
-    async function elegirLado(lado) {
-      try {
-        await cambiarLado(lado)
-        btnLeft.classList.toggle('activo',  lado === 'LEFT')
-        btnRight.classList.toggle('activo', lado === 'RIGHT')
-        await actualizarTodo()
-      } catch (e) {
-        console.error('Error cambiando lado:', e)
-      }
-    }
+    function resetUI() {
+      miRegistrado = false
+      gameEstado   = 'esperando'
+      gameStartMs  = null
+      clearInterval(timerInterval)
+      timerInterval = null
+      timerEl.textContent = '–:––'
+      timerEl.classList.remove('urgente')
+      overlayGanador.classList.add('oculto')
+      selectorLado.classList.add('oculto')
+      pantallaIngreso.classList.remove('oculto', 'salida')
+      btnEntrar.disabled = false
+      btnEntrar.querySelector('span').textContent = 'Entrar al campo'
+      inputAlias.value = ''
+    }
 
-    btnLeft.addEventListener('click',  () => elegirLado('LEFT'))
-    btnRight.addEventListener('click', () => elegirLado('RIGHT'))
+    async function actualizarTodo() {
+      try {
+        const { izquierda, derecha, total, todos } = await obtenerJugadores()
+        const d = calcularDesplazamiento(izquierda.length, derecha.length)
 
-    // Realtime
-    suscribirCambios(actualizarTodo)
+        // HUD conteos
+        conteoLeftEl.textContent  = izquierda.length
+        conteoRightEl.textContent = derecha.length
+        desplVal.textContent = ${d > 0 ? '+' : ''}${d}px
+        desplVal.className = d === 0 ? '' : d > 0 ? 'dom-left' : 'dom-right'
+        desplIcono.style.transform = rotate(${d / 3}deg)
 
-    // Carga inicial
-    actualizarTodo()
-  </script>
+        subLeft.textContent  = ${izquierda.length} jugador${izquierda.length !== 1 ? 'es' : ''}
+        subRight.textContent = ${derecha.length} jugador${derecha.length !== 1 ? 'es' : ''}
+
+        // Escena 3D
+        actualizarCuerda(d)
+        actualizarJugadoresVisuales(izquierda, derecha)
+
+        // Reset si todos salieron (nueva partida iniciada por otro)
+        if (total === 0 && miRegistrado) {
+          resetUI()
+          return
+        }
+
+        // Estado de la partida
+        const ep = calcularEstadoPartida(todos)
+
+        if (ep.estado === 'esperando') {
+          gameEstado = 'esperando'
+          clearInterval(timerInterval); timerInterval = null
+          timerEl.textContent = '–:––'
+          const faltan = 3 - total
+          statusEl.textContent = total === 0
+            ? 'Sé el primero en unirte'
+            : Esperando ${faltan} jugador${faltan !== 1 ? 'es' : ''} más (${total}/3)
+
+        } else if (ep.estado === 'jugando') {
+          if (gameEstado !== 'jugando') {
+            gameEstado  = 'jugando'
+            gameStartMs = ep.inicioMs
+            clearInterval(timerInterval)
+            timerInterval = setInterval(tickTimer, 1000)
+            statusEl.textContent = '¡La partida ha comenzado!'
+            setTimeout(() => {
+              if (gameEstado === 'jugando') statusEl.textContent = 'Elige tu lado para ganar'
+            }, 3000)
+          }
+          timerEl.textContent = formatTimer(ep.tiempoRestante)
+
+        } else if (ep.estado === 'terminado') {
+          if (gameEstado !== 'terminado') {
+            gameEstado = 'terminado'
+            clearInterval(timerInterval); timerInterval = null
+            timerEl.textContent = '0:00'
+            timerEl.classList.remove('urgente')
+            statusEl.textContent = '¡Fin de la partida!'
+            mostrarGanador(ep.ganador)
+          }
+        }
+
+      } catch (e) {
+        console.error('Error actualizando estado:', e)
+      }
+    }
+
+    // ── Ingreso ──
+    btnEntrar.addEventListener('click', async () => {
+      const alias = inputAlias.value.trim()
+      if (!alias) {
+        inputAlias.classList.add('shake')
+        setTimeout(() => inputAlias.classList.remove('shake'), 400)
+        return
+      }
+      btnEntrar.disabled = true
+      btnEntrar.querySelector('span').textContent = 'Entrando...'
+      try {
+        await registrarJugador(alias, 'LEFT')
+        miRegistrado = true
+        pantallaIngreso.classList.add('salida')
+        setTimeout(() => pantallaIngreso.classList.add('oculto'), 400)
+        selectorLado.classList.remove('oculto')
+        selectorLado.classList.add('entrada')
+        bienvenida.textContent = Hola, ${alias}
+        btnLeft.classList.add('activo')
+        await actualizarTodo()
+      } catch (e) {
+        console.error(e)
+        btnEntrar.disabled = false
+        btnEntrar.querySelector('span').textContent = 'Entrar al campo'
+        const errMsg = document.getElementById('error-msg')
+        errMsg.textContent = e?.message || 'Error al conectar con Supabase'
+        errMsg.classList.remove('oculto')
+        setTimeout(() => errMsg.classList.add('oculto'), 6000)
+      }
+    })
+
+    inputAlias.addEventListener('keydown', e => { if (e.key === 'Enter') btnEntrar.click() })
+
+    // ── Cambio de lado ──
+    async function elegirLado(lado) {
+      if (gameEstado === 'terminado') return
+      try {
+        await cambiarLado(lado)
+        btnLeft.classList.toggle('activo',  lado === 'LEFT')
+        btnRight.classList.toggle('activo', lado === 'RIGHT')
+        await actualizarTodo()
+      } catch (e) {
+        console.error('Error cambiando lado:', e)
+      }
+    }
+
+    btnLeft.addEventListener('click',  () => elegirLado('LEFT'))
+    btnRight.addEventListener('click', () => elegirLado('RIGHT'))
+
+    // ── Nueva partida ──
+    btnNuevaPartida.addEventListener('click', async () => {
+      btnNuevaPartida.disabled = true
+      btnNuevaPartida.textContent = 'Reiniciando...'
+      try {
+        await reiniciarJuego()
+        resetUI()
+      } catch (e) {
+        console.error(e)
+        btnNuevaPartida.disabled = false
+        btnNuevaPartida.textContent = 'Nueva partida'
+      }
+    })
+
+    // ── Realtime + carga inicial ──
+    suscribirCambios(actualizarTodo)
+    actualizarTodo()
+  </script>
 </body>
 </html>
