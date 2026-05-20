@@ -125,6 +125,47 @@ body {
   to   { opacity: 0.3; }
 }
 
+.timer-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-badge {
+  font-family: var(--font-hud);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  transition: background 0.4s, color 0.4s, border-color 0.4s;
+}
+
+.estado-esperando {
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.5);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.estado-jugando {
+  background: rgba(74,255,128,0.12);
+  color: #4aff80;
+  border-color: rgba(74,255,128,0.35);
+  animation: pulse-live 1.8s ease infinite;
+}
+
+.estado-terminado {
+  background: rgba(255,200,50,0.12);
+  color: #ffc832;
+  border-color: rgba(255,200,50,0.35);
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
 #status-bar {
   position: fixed;
   top: 56px;
