@@ -197,23 +197,24 @@
     const subRight         = document.getElementById('sub-right')
 
     async function actualizarTodo() {
-      const { izquierda, derecha } = await obtenerConteo()
-      const d = calcularDesplazamiento(izquierda, derecha)
+      try {
+        const { izquierda, derecha } = await obtenerConteo()
+        const d = calcularDesplazamiento(izquierda, derecha)
 
-      // HUD 2D
-      conteoLeftEl.textContent  = izquierda
-      conteoRightEl.textContent = derecha
-      desplVal.textContent = `${d > 0 ? '+' : ''}${d}px`
-      desplVal.className = d === 0 ? '' : d > 0 ? 'dom-left' : 'dom-right'
-      desplIcono.style.transform = `rotate(${d / 3}deg)`
+        conteoLeftEl.textContent  = izquierda
+        conteoRightEl.textContent = derecha
+        desplVal.textContent = `${d > 0 ? '+' : ''}${d}px`
+        desplVal.className = d === 0 ? '' : d > 0 ? 'dom-left' : 'dom-right'
+        desplIcono.style.transform = `rotate(${d / 3}deg)`
 
-      // Conteo en botones de lado
-      subLeft.textContent  = `${izquierda} jugador${izquierda !== 1 ? 'es' : ''}`
-      subRight.textContent = `${derecha} jugador${derecha !== 1 ? 'es' : ''}`
+        subLeft.textContent  = `${izquierda} jugador${izquierda !== 1 ? 'es' : ''}`
+        subRight.textContent = `${derecha} jugador${derecha !== 1 ? 'es' : ''}`
 
-      // Escena 3D
-      actualizarCuerda(d)
-      actualizarJugadoresVisuales(izquierda, derecha)
+        actualizarCuerda(d)
+        actualizarJugadoresVisuales(izquierda, derecha)
+      } catch (e) {
+        console.error('Error actualizando estado:', e)
+      }
     }
 
     // Ingreso
@@ -250,10 +251,14 @@
 
     // Cambio de lado
     async function elegirLado(lado) {
-      btnLeft.classList.toggle('activo',  lado === 'LEFT')
-      btnRight.classList.toggle('activo', lado === 'RIGHT')
-      await cambiarLado(lado)
-      await actualizarTodo()
+      try {
+        await cambiarLado(lado)
+        btnLeft.classList.toggle('activo',  lado === 'LEFT')
+        btnRight.classList.toggle('activo', lado === 'RIGHT')
+        await actualizarTodo()
+      } catch (e) {
+        console.error('Error cambiando lado:', e)
+      }
     }
 
     btnLeft.addEventListener('click',  () => elegirLado('LEFT'))
