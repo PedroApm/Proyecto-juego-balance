@@ -34,6 +34,143 @@
     </div>
   </div>
 
+
+  <!-- ESCENA A-FRAME -->
+  <a-scene
+    id="escena-xr"
+    background="color: #0a0a1a"
+    renderer="antialias: true"
+    vr-mode-ui="enabled: true"
+  >
+
+    <!-- Assets / audio -->
+    <a-assets>
+      <audio id="audio-ambient" src="assets/sounds/ambient.mp3"   preload="auto" loop></audio>
+      <audio id="audio-tension" src="assets/sounds/tension.mp3"   preload="auto" loop></audio>
+    </a-assets>
+
+    <!-- Sonidos posicionados (usados por scene.js) -->
+    <a-entity id="sonido-left"  position="-4 1.5 -4"
+      sound="src: #audio-ambient; autoplay: true; loop: true; volume: 0.3"></a-entity>
+    <a-entity id="sonido-right" position=" 4 1.5 -4"
+      sound="src: #audio-ambient; autoplay: true; loop: true; volume: 0.3"></a-entity>
+
+    <!-- Entorno -->
+    <a-entity environment="preset: forest; groundColor: #1a1a2e; grid: none; fog: 0.6"></a-entity>
+
+    <!-- Suelo propio para más control -->
+    <a-plane
+      position="0 0 -4"
+      rotation="-90 0 0"
+      width="30" height="20"
+      color="#1a1a2e"
+      roughness="1"
+    ></a-plane>
+
+    <!-- ── Punto de equilibrio central (FIJO) ── -->
+    <a-sphere
+      id="punto-equilibrio"
+      position="0 1.5 -4"
+      radius="0.18"
+      color="#ffffff"
+      emissive="#aaaaff"
+      emissive-intensity="0.4"
+    ></a-sphere>
+
+    <!-- ── Cuerda / barra (se mueve con actualizarCuerda) ── -->
+    <a-cylinder
+      id="cuerda"
+      position="0 1.5 -4"
+      radius="0.06"
+      height="5"
+      rotation="0 0 90"
+      color="#c8a96e"
+      roughness="0.8"
+    ></a-cylinder>
+
+    <!-- Extremo izquierdo de la cuerda -->
+    <a-sphere
+      id="extremo-left"
+      position="-2.5 1.5 -4"
+      radius="0.12"
+      color="#4aaeff"
+      emissive="#4aaeff"
+      emissive-intensity="0.5"
+    ></a-sphere>
+
+    <!-- Extremo derecho de la cuerda -->
+    <a-sphere
+      id="extremo-right"
+      position="2.5 1.5 -4"
+      radius="0.12"
+      color="#ff8844"
+      emissive="#ff8844"
+      emissive-intensity="0.5"
+    ></a-sphere>
+
+    <!-- Indicadores LEFT / RIGHT en extremos -->
+    <a-text
+      id="texto-left-3d"
+      value="LEFT"
+      position="-2.5 2.1 -4"
+      align="center"
+      color="#4aaeff"
+      scale="1.2 1.2 1.2"
+    ></a-text>
+    <a-text
+      id="texto-right-3d"
+      value="RIGHT"
+      position="2.5 2.1 -4"
+      align="center"
+      color="#ff8844"
+      scale="1.2 1.2 1.2"
+    ></a-text>
+
+    <!-- Marcador 3D (score) -->
+    <a-text
+      id="marcador-left-3d"
+      value="LEFT&#10;0"
+      position="-4 3.2 -5"
+      align="center"
+      color="#4aaeff"
+      scale="1.6 1.6 1.6"
+    ></a-text>
+    <a-text
+      id="marcador-right-3d"
+      value="RIGHT&#10;0"
+      position="4 3.2 -5"
+      align="center"
+      color="#ff8844"
+      scale="1.6 1.6 1.6"
+    ></a-text>
+
+    <!-- Contenedor jugadores izquierda -->
+    <a-entity id="jugadores-left"></a-entity>
+
+    <!-- Contenedor jugadores derecha -->
+    <a-entity id="jugadores-right"></a-entity>
+
+    <!-- Poste central -->
+    <a-cylinder
+      position="0 0.75 -4"
+      radius="0.05"
+      height="1.5"
+      color="#555"
+    ></a-cylinder>
+
+    <!-- Cámara con controles para desktop y VR -->
+    <a-entity position="0 1.6 2">
+      <a-camera look-controls wasd-controls>
+        <a-cursor color="#ffffff" opacity="0.7"></a-cursor>
+      </a-camera>
+    </a-entity>
+
+    <!-- Luz ambiental -->
+    <a-light type="ambient" color="#334" intensity="0.8"></a-light>
+    <a-light type="directional" position="2 4 1" intensity="0.9" color="#fff"></a-light>
+
+  </a-scene>
+  
   <script type="module">
     import {
       registrarJugador,
