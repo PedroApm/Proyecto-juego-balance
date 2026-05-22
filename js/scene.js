@@ -9,7 +9,7 @@ function anim(el, to, dur = 600) {
   el.setAttribute('animation__pos', { property: 'position', to, dur, easing: 'easeOutElastic' })
 }
 
-export function actualizarCuerda(desplazamiento) {
+export function actualizarCuerda(desplazamiento, tiempoRestante = null) {
   const x = desplazamiento / 75
 
   anim(document.getElementById('cuerda'),         `${x} ${CUERDA_Y} ${CUERDA_Z}`)
@@ -21,7 +21,16 @@ export function actualizarCuerda(desplazamiento) {
   const sonidoLeft  = document.getElementById('sonido-left')
   const sonidoRight = document.getElementById('sonido-right')
 
-  if (Math.abs(desplazamiento) > 100) {
+  const ultimos30 = tiempoRestante !== null && tiempoRestante <= 30 && tiempoRestante > 0
+
+  if (ultimos30 && desplazamiento !== 0) {
+    // El bando que va perdiendo escucha tensión en los últimos 30s
+    const izqPierde = desplazamiento < 0   // derecha tiene más → izquierda pierde
+    sonidoLeft?.setAttribute('sound',
+      `src: #audio-${izqPierde ? 'tension' : 'ambient'}; autoplay: true; loop: true; volume: ${izqPierde ? 0.7 : 0.3}`)
+    sonidoRight?.setAttribute('sound',
+      `src: #audio-${izqPierde ? 'ambient' : 'tension'}; autoplay: true; loop: true; volume: ${izqPierde ? 0.3 : 0.7}`)
+  } else if (Math.abs(desplazamiento) > 100) {
     if (desplazamiento > 0) {
       sonidoRight?.setAttribute('sound', 'src: #audio-ambient; autoplay: false')
       sonidoLeft?.setAttribute('sound',  'src: #audio-tension; autoplay: true; loop: true; volume: 0.6')
@@ -75,7 +84,7 @@ function renderizarFiguras(grupo, jugadores, dir) {
 
     // Nombre sobre el personaje
     const lbl = document.createElement('a-text')
-    lbl.setAttribute('position', `0 7.2 0.1`)
+    lbl.setAttribute('position', `0 3.0 0.1`)
     lbl.setAttribute('value', j.alias || '?')
     lbl.setAttribute('align', 'center')
     lbl.setAttribute('color', '#ffffff')

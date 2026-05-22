@@ -244,10 +244,11 @@
     const btnNuevaPartida  = document.getElementById('btn-nueva-partida')
     const btnSalir         = document.getElementById('btn-salir')
 
-    let miRegistrado  = false
-    let gameEstado    = 'esperando'
-    let gameStartMs   = null
-    let timerInterval = null
+    let miRegistrado        = false
+    let gameEstado          = 'esperando'
+    let gameStartMs         = null
+    let timerInterval       = null
+    let ultimoDesplazamiento = 0
 
     // ── Seleccion de skin ──
     const ALL_SKINS = ['alien1','alien2','alien3','alien4','astro1','astro2','astro3','astro4','astro5']
@@ -294,6 +295,7 @@
       }
       timerEl.textContent = formatTimer(remaining)
       timerEl.classList.toggle('urgente', remaining <= 10)
+      if (remaining === 30) actualizarCuerda(ultimoDesplazamiento, 30)
     }
 
     // ── Ganador ──
@@ -346,12 +348,13 @@
         subLeft.textContent  = `${izquierda.length} jugador${izquierda.length !== 1 ? 'es' : ''}`
         subRight.textContent = `${derecha.length} jugador${derecha.length !== 1 ? 'es' : ''}`
 
-        actualizarCuerda(d)
-        actualizarJugadoresVisuales(agregarSkins(izquierda, 0), agregarSkins(derecha, 4))
-
         if (total === 0 && miRegistrado) { resetUI(); return }
 
         const ep = calcularEstadoPartida(todos)
+
+        ultimoDesplazamiento = d
+        actualizarCuerda(d, ep.tiempoRestante ?? null)
+        actualizarJugadoresVisuales(agregarSkins(izquierda, 0), agregarSkins(derecha, 4))
 
         if (ep.estado === 'esperando') {
           gameEstado = 'esperando'

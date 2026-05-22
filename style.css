@@ -165,12 +165,12 @@ body {
   left: 0; right: 0;
   z-index: 190;
   text-align: center;
-  padding: 5px 16px;
-  background: rgba(5,5,16,0.6);
+  padding: 6px 16px;
+  background: rgba(5,5,16,0.85);
   backdrop-filter: blur(6px);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.5);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.85);
   letter-spacing: 0.04em;
 }
 
