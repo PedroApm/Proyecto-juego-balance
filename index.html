@@ -135,7 +135,7 @@
     <a-sky id="cielo" color="#000008"></a-sky>
 
     <!-- Superficie lunar esférica (planeta) -->
-    <a-sphere position="0 -28 -5" radius="30"
+    <a-sphere position="0 -30 -5" radius="30"
       color="#8c8882" roughness="0.98" metalness="0.02"
       segments-width="48" segments-height="24"></a-sphere>
 
@@ -144,7 +144,7 @@
       color="#ffffff" opacity="0.1"></a-box>
 
     <!-- Punto de equilibrio central -->
-    <a-sphere id="punto-equilibrio" position="0 1.5 -3"
+    <a-sphere id="punto-equilibrio" position="0 1.0 -3"
       radius="0.2" color="#ffffff"
       emissive="#8888ff" emissive-intensity="0.7"
       animation="property: scale; from: 1 1 1; to: 1.2 1.2 1.2;
@@ -152,14 +152,11 @@
     </a-sphere>
     <a-light type="point" position="0 2.5 -3" color="#aaaaff" intensity="0.6" distance="4"></a-light>
 
-    <!-- Cuerda -->
-    <a-cylinder id="cuerda" position="0 1.5 -3"
-      radius="0.09" height="8" rotation="0 0 90"
-      color="#d4a96a" roughness="0.7" metalness="0.1">
-    </a-cylinder>
+    <!-- Cuerda curva (segmentos generados por scene.js) -->
+    <a-entity id="cuerda-group"></a-entity>
 
     <!-- Extremo izquierdo (LEFT) -->
-    <a-sphere id="extremo-left" position="-4 1.5 -3"
+    <a-sphere id="extremo-left" position="-4 0.66 -3"
       radius="0.16" color="#4aaeff"
       emissive="#4aaeff" emissive-intensity="0.6"
       animation="property: scale; from: 1 1 1; to: 1.15 1.15 1.15;
@@ -168,7 +165,7 @@
     <a-light type="point" position="-4 1.5 -3" color="#4aaeff" intensity="0.55" distance="3"></a-light>
 
     <!-- Extremo derecho (RIGHT) -->
-    <a-sphere id="extremo-right" position="4 1.5 -3"
+    <a-sphere id="extremo-right" position="4 0.66 -3"
       radius="0.16" color="#ff8844"
       emissive="#ff8844" emissive-intensity="0.6"
       animation="property: scale; from: 1 1 1; to: 1.15 1.15 1.15;
@@ -177,9 +174,9 @@
     <a-light type="point" position="4 1.5 -3" color="#ff8844" intensity="0.55" distance="3"></a-light>
 
     <!-- Labels flotantes de extremos -->
-    <a-text id="texto-left-3d"  value="LEFT"  position="-4 2.15 -3"
+    <a-text id="texto-left-3d"  value="LEFT"  position="-4 1.26 -3"
       align="center" color="#4aaeff" scale="1.4 1.4 1.4"></a-text>
-    <a-text id="texto-right-3d" value="RIGHT" position=" 4 2.15 -3"
+    <a-text id="texto-right-3d" value="RIGHT" position=" 4 1.26 -3"
       align="center" color="#ff8844" scale="1.4 1.4 1.4"></a-text>
 
     <!-- Marcadores 3D en el fondo -->
