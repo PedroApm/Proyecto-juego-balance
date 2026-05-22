@@ -323,6 +323,9 @@
       timerEl.classList.remove('urgente')
       overlayGanador.classList.add('oculto')
       selectorLado.classList.add('oculto')
+      selectorLado.classList.remove('entrada')
+      btnLeft.classList.remove('activo')
+      btnRight.classList.remove('activo')
       pantallaIngreso.classList.remove('oculto', 'salida')
       btnEntrar.disabled = false
       btnEntrar.querySelector('span').textContent = 'Entrar al campo'
@@ -408,7 +411,8 @@
 
       pantallaIngreso.classList.add('salida')
       setTimeout(() => pantallaIngreso.classList.add('oculto'), 400)
-      selectorLado.classList.remove('oculto')
+      selectorLado.classList.remove('oculto', 'entrada')
+      void selectorLado.offsetWidth
       selectorLado.classList.add('entrada')
       bienvenida.textContent = `Hola, ${alias}`
       btnLeft.classList.add('activo')
