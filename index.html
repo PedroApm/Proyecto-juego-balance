@@ -113,8 +113,7 @@
     <a-assets timeout="14000">
       <audio id="audio-ambient" src="assets/sounds/ambient.mp3" preload="auto"></audio>
       <audio id="audio-tension" src="assets/sounds/tension.mp3" preload="auto"></audio>
-      <img id="img-espacio" src="assets/img/espacio1.jpg" crossorigin="anonymous" />
-      <a-asset-item id="model-alien1"  src="assets/models/alien1.glb"></a-asset-item>
+<a-asset-item id="model-alien1"  src="assets/models/alien1.glb"></a-asset-item>
       <a-asset-item id="model-alien2"  src="assets/models/alien2.glb"></a-asset-item>
       <a-asset-item id="model-alien3"  src="assets/models/alien3.glb"></a-asset-item>
       <a-asset-item id="model-alien4"  src="assets/models/alien4.glb"></a-asset-item>
@@ -132,8 +131,8 @@
     <a-entity id="sonido-right" position=" 4 1.5 -3"
       sound="src: #audio-ambient; autoplay: true; loop: true; volume: 0.3"></a-entity>
 
-    <!-- Cielo espacial con imagen -->
-    <a-sky src="#img-espacio" rotation="0 -90 0"></a-sky>
+    <!-- Cielo estrellado generado por canvas -->
+    <a-sky id="cielo" color="#000008"></a-sky>
 
     <!-- Superficie lunar -->
     <a-plane position="0 0 -5" rotation="-90 0 0"
@@ -506,6 +505,25 @@
 
     function poblarEscena() {
       const scene = document.getElementById('escena-xr')
+
+      // Cielo estrellado
+      const canvas = document.createElement('canvas')
+      canvas.width = 2048
+      canvas.height = 1024
+      const ctx = canvas.getContext('2d')
+      ctx.fillStyle = '#000008'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      for (let i = 0; i < 3000; i++) {
+        const x = Math.random() * canvas.width
+        const y = Math.random() * canvas.height
+        const r = Math.random() < 0.05 ? 2 : Math.random() < 0.2 ? 1.2 : 0.6
+        const a = 0.35 + Math.random() * 0.65
+        ctx.beginPath()
+        ctx.arc(x, y, r, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(255,255,255,${a.toFixed(2)})`
+        ctx.fill()
+      }
+      document.getElementById('cielo').setAttribute('src', canvas.toDataURL())
 
       // Crateres
       const crateres = [

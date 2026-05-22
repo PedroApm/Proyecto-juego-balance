@@ -73,14 +73,14 @@ function renderizarFiguras(grupo, jugadores, dir) {
     fig.setAttribute('rotation', `0 ${dir < 0 ? 90 : -90} 0`)
     wrapper.appendChild(fig)
 
-    // Nombre grande y legible sobre el personaje
+    // Nombre sobre el personaje
     const lbl = document.createElement('a-text')
-    lbl.setAttribute('position', `0 6.0 0.05`)
+    lbl.setAttribute('position', `0 7.2 0.1`)
     lbl.setAttribute('value', j.alias || '?')
     lbl.setAttribute('align', 'center')
-    lbl.setAttribute('color', teamColor)
-    lbl.setAttribute('scale', '5 5 5')
-    lbl.setAttribute('width', '0.7')
+    lbl.setAttribute('color', '#ffffff')
+    lbl.setAttribute('scale', '4 4 4')
+    lbl.setAttribute('width', '2')
     lbl.setAttribute('side', 'double')
     wrapper.appendChild(lbl)
 
