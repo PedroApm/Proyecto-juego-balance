@@ -2,13 +2,15 @@ const CUERDA_Y  = 1.5
 const CUERDA_Z  = -3
 const MAX_FIGURAS = 5
 
+const SKINS_DEFAULT = ['alien1','alien2','alien3','alien4','astro1','astro2','astro3','astro4','astro5']
+
 function anim(el, to, dur = 600) {
   if (!el) return
   el.setAttribute('animation__pos', { property: 'position', to, dur, easing: 'easeOutElastic' })
 }
 
 export function actualizarCuerda(desplazamiento) {
-  const x = desplazamiento / 75   // max ±150 → ±2 unidades
+  const x = desplazamiento / 75
 
   anim(document.getElementById('cuerda'),         `${x} ${CUERDA_Y} ${CUERDA_Z}`)
   anim(document.getElementById('extremo-left'),   `${x - 4} ${CUERDA_Y} ${CUERDA_Z}`)
@@ -53,39 +55,46 @@ function renderizarFiguras(grupo, jugadores, dir) {
   const mostrar = Math.min(jugadores.length, MAX_FIGURAS)
   for (let i = 0; i < mostrar; i++) {
     const j = jugadores[i]
-    const x = dir * (5 + i * 0.7)
+    const x = dir * (5 + i * 0.9)
+    const skin = j.skin || SKINS_DEFAULT[i % SKINS_DEFAULT.length]
+    const teamColor = dir < 0 ? '#4aaeff' : '#ff8844'
 
-    // Cuerpo (a-box)
-    const fig = document.createElement('a-box')
-    fig.setAttribute('position', `${x} 0.5 ${CUERDA_Z}`)
-    fig.setAttribute('width',  '0.4')
-    fig.setAttribute('height', '1')
-    fig.setAttribute('depth',  '0.4')
-    fig.setAttribute('color',  dir < 0 ? '#4aaeff' : '#ff8844')
-    fig.setAttribute('opacity', '0.92')
-    fig.setAttribute('animation', `property: position; dir: alternate; loop: true;
-      to: ${x} 0.62 ${CUERDA_Z}; dur: ${900 + i * 130}; easing: easeInOutSine`)
-    grupo.appendChild(fig)
+    // Wrapper con animación flotante
+    const wrapper = document.createElement('a-entity')
+    wrapper.setAttribute('position', `${x} 0 ${CUERDA_Z}`)
+    wrapper.setAttribute('animation__float',
+      `property: position; dir: alternate; loop: true; ` +
+      `to: ${x} 0.2 ${CUERDA_Z}; dur: ${900 + i * 130}; easing: easeInOutSine`)
 
-    // Alias encima
+    // Modelo GLB del personaje
+    const fig = document.createElement('a-gltf-model')
+    fig.setAttribute('src', `#model-${skin}`)
+    fig.setAttribute('scale', '0.7 0.7 0.7')
+    fig.setAttribute('rotation', `0 ${dir < 0 ? 90 : -90} 0`)
+    wrapper.appendChild(fig)
+
+    // Nombre grande y legible sobre el personaje
     const lbl = document.createElement('a-text')
-    lbl.setAttribute('position', `${x} 1.3 ${CUERDA_Z + 0.21}`)
+    lbl.setAttribute('position', `0 2.2 0.05`)
     lbl.setAttribute('value', j.alias || '?')
     lbl.setAttribute('align', 'center')
-    lbl.setAttribute('color', '#ffffff')
-    lbl.setAttribute('scale', '1.1 1.1 1.1')
-    lbl.setAttribute('width', '1.8')
-    grupo.appendChild(lbl)
+    lbl.setAttribute('color', teamColor)
+    lbl.setAttribute('scale', '5 5 5')
+    lbl.setAttribute('width', '0.7')
+    lbl.setAttribute('side', 'double')
+    wrapper.appendChild(lbl)
+
+    grupo.appendChild(wrapper)
   }
 
   if (jugadores.length > MAX_FIGURAS) {
-    const x = dir * (5 + (MAX_FIGURAS - 1) * 0.7)
+    const x = dir * (5 + (MAX_FIGURAS - 1) * 0.9)
     const extra = document.createElement('a-text')
-    extra.setAttribute('position', `${x} 2.1 ${CUERDA_Z}`)
+    extra.setAttribute('position', `${x} 2.8 ${CUERDA_Z}`)
     extra.setAttribute('value', `+${jugadores.length - MAX_FIGURAS}`)
     extra.setAttribute('align', 'center')
-    extra.setAttribute('color', '#fff')
-    extra.setAttribute('scale', '1.5 1.5 1.5')
+    extra.setAttribute('color', '#ffffff')
+    extra.setAttribute('scale', '2.5 2.5 2.5')
     grupo.appendChild(extra)
   }
 }
