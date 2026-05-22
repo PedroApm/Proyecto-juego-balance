@@ -134,10 +134,10 @@
     <!-- Cielo estrellado generado por canvas -->
     <a-sky id="cielo" color="#000008"></a-sky>
 
-    <!-- Superficie lunar -->
-    <a-plane position="0 0 -5" rotation="-90 0 0"
-      width="70" height="55"
-      color="#8c8882" roughness="0.98" metalness="0.02"></a-plane>
+    <!-- Superficie lunar esférica (planeta) -->
+    <a-sphere position="0 -28 -5" radius="30"
+      color="#8c8882" roughness="0.98" metalness="0.02"
+      segments-width="48" segments-height="24"></a-sphere>
 
     <!-- Linea central de la cuerda -->
     <a-box position="0 0.01 -3" width="0.05" height="0.01" depth="12"
