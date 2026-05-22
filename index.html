@@ -480,6 +480,12 @@
     suscribirCambios(actualizarTodo)
     actualizarTodo()
 
+    // Polling de seguridad: mientras el juego no arranque comprueba cada 2s
+    // (cubre latencia de Supabase Realtime en la transición esperando→jugando)
+    setInterval(() => {
+      if (gameEstado === 'esperando') actualizarTodo()
+    }, 2000)
+
     // ── Escenario lunar ──
     function supY(x, z) {
       const d2 = 900 - x * x - (z + 5) * (z + 5)

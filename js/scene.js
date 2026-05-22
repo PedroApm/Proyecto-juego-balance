@@ -55,7 +55,7 @@ function construirCuerdaCurva(cx) {
 }
 
 export function actualizarCuerda(desplazamiento, tiempoRestante = null) {
-  const cx = desplazamiento / 75
+  const cx = -desplazamiento / 75  // negado: más jugadores en LEFT → cuerda se va a la izquierda
 
   construirCuerdaCurva(cx)
 
