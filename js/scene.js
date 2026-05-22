@@ -64,18 +64,18 @@ function renderizarFiguras(grupo, jugadores, dir) {
     wrapper.setAttribute('position', `${x} 0 ${CUERDA_Z}`)
     wrapper.setAttribute('animation__float',
       `property: position; dir: alternate; loop: true; ` +
-      `to: ${x} 0.2 ${CUERDA_Z}; dur: ${900 + i * 130}; easing: easeInOutSine`)
+      `to: ${x} 0.25 ${CUERDA_Z}; dur: ${900 + i * 130}; easing: easeInOutSine`)
 
     // Modelo GLB del personaje
     const fig = document.createElement('a-gltf-model')
     fig.setAttribute('src', `#model-${skin}`)
-    fig.setAttribute('scale', '0.7 0.7 0.7')
+    fig.setAttribute('scale', '5 5 5')
     fig.setAttribute('rotation', `0 ${dir < 0 ? 90 : -90} 0`)
     wrapper.appendChild(fig)
 
     // Nombre grande y legible sobre el personaje
     const lbl = document.createElement('a-text')
-    lbl.setAttribute('position', `0 2.2 0.05`)
+    lbl.setAttribute('position', `0 3.2 0.05`)
     lbl.setAttribute('value', j.alias || '?')
     lbl.setAttribute('align', 'center')
     lbl.setAttribute('color', teamColor)
@@ -90,7 +90,7 @@ function renderizarFiguras(grupo, jugadores, dir) {
   if (jugadores.length > MAX_FIGURAS) {
     const x = dir * (5 + (MAX_FIGURAS - 1) * 0.9)
     const extra = document.createElement('a-text')
-    extra.setAttribute('position', `${x} 2.8 ${CUERDA_Z}`)
+    extra.setAttribute('position', `${x} 4.0 ${CUERDA_Z}`)
     extra.setAttribute('value', `+${jugadores.length - MAX_FIGURAS}`)
     extra.setAttribute('align', 'center')
     extra.setAttribute('color', '#ffffff')
