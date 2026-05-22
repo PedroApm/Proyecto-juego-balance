@@ -481,9 +481,14 @@
     actualizarTodo()
 
     // ── Escenario lunar ──
+    function supY(x, z) {
+      const d2 = 900 - x * x - (z + 5) * (z + 5)
+      return d2 > 0 ? -30 + Math.sqrt(d2) : 0
+    }
+
     function crearCrater(x, z, r) {
       const c = document.createElement('a-cylinder')
-      c.setAttribute('position', `${x} 0.01 ${z}`)
+      c.setAttribute('position', `${x} ${supY(x, z).toFixed(3)} ${z}`)
       c.setAttribute('radius', String(r))
       c.setAttribute('height', '0.05')
       c.setAttribute('color', '#4a4844')
@@ -494,7 +499,7 @@
     function crearRoca(x, z, r) {
       const roca = document.createElement('a-sphere')
       const v = (100 + Math.floor(Math.random() * 40)).toString(16).padStart(2, '0')
-      roca.setAttribute('position', `${x} ${(r * 0.55).toFixed(2)} ${z}`)
+      roca.setAttribute('position', `${x} ${(supY(x, z) + r * 0.45).toFixed(3)} ${z}`)
       roca.setAttribute('radius', String(r))
       roca.setAttribute('color', `#${v}${v}${v}`)
       roca.setAttribute('roughness', '1')
@@ -553,7 +558,7 @@
       montanas.forEach(([x, z, r]) => {
         const m = document.createElement('a-sphere')
         const shade = (72 + Math.floor(Math.random() * 28)).toString(16).padStart(2, '0')
-        m.setAttribute('position', `${x} ${(-r * 0.52).toFixed(2)} ${z}`)
+        m.setAttribute('position', `${x} ${(supY(x, z) - r * 0.52).toFixed(3)} ${z}`)
         m.setAttribute('radius', String(r))
         m.setAttribute('color', `#${shade}${shade}${shade}`)
         m.setAttribute('roughness', '1')
