@@ -372,12 +372,13 @@
             gameStartMs = ep.inicioMs
             clearInterval(timerInterval)
             timerInterval = setInterval(tickTimer, 1000)
+            timerEl.textContent = formatTimer(ep.tiempoRestante)
             statusEl.textContent = 'La partida ha comenzado!'
             setTimeout(() => {
               if (gameEstado === 'jugando') statusEl.textContent = 'Elige tu lado para ganar'
             }, 3000)
           }
-          timerEl.textContent = formatTimer(ep.tiempoRestante)
+          // El contador lo gestiona tickTimer — no se toca aquí
 
         } else if (ep.estado === 'terminado') {
           hudBadge.textContent = 'FIN'
@@ -480,10 +481,10 @@
     suscribirCambios(actualizarTodo)
     actualizarTodo()
 
-    // Polling de seguridad: mientras el juego no arranque comprueba cada 2s
-    // (cubre latencia de Supabase Realtime en la transición esperando→jugando)
+    // Polling de seguridad cada 2s: mantiene jugadores/cuerda sincronizados
+    // Se detiene solo cuando la partida termina (estado terminado lo maneja el overlay)
     setInterval(() => {
-      if (gameEstado === 'esperando') actualizarTodo()
+      if (gameEstado !== 'terminado') actualizarTodo()
     }, 2000)
 
     // ── Escenario lunar ──
