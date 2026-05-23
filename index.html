@@ -131,10 +131,10 @@
     <a-entity id="sonido-right" position=" 4 1.5 -3"
       sound="src: #audio-ambient; autoplay: true; loop: true; volume: 0.3"></a-entity>
 
-    <!-- Cielo estrellado generado por canvas -->
+    <!-- Cielo estrellado generado -->
     <a-sky id="cielo" color="#000008"></a-sky>
 
-    <!-- Superficie lunar esférica (planeta) -->
+    <!-- Superficie lunar esférica  -->
     <a-sphere position="0 -30 -5" radius="30"
       color="#8c8882" roughness="0.98" metalness="0.02"
       segments-width="48" segments-height="24"></a-sphere>
@@ -150,6 +150,39 @@
       animation="property: scale; from: 1 1 1; to: 1.2 1.2 1.2;
         dir: alternate; loop: true; dur: 1200; easing: easeInOutSine">
     </a-sphere>
+<!-- Regla visual del desplazamiento -->
+<a-entity id="regla-balance">
+  <!-- Barra guía -->
+  <a-box position="0 0.14 -3.02" width="8.4" height="0.02" depth="0.04" color="#8d8d98" opacity="0.28"></a-box>
+
+  <!-- Marca central -->
+  <a-box position="0 0.16 -3.02" width="0.06" height="0.30" depth="0.06" color="#ffffff" opacity="0.95"></a-box>
+  <a-text position="0 0.42 -3.02" value="0" align="center" color="#ffffff" scale="0.55 0.55 0.55"></a-text>
+
+  <!-- Marcas izquierda -->
+  <a-box position="-1.33 0.15 -3.02" width="0.03" height="0.18" depth="0.03" color="#4aaeff" opacity="0.75"></a-box>
+  <a-text position="-1.33 0.36 -3.02" value="-50" align="center" color="#4aaeff" scale="0.42 0.42 0.42"></a-text>
+
+  <a-box position="-2.67 0.15 -3.02" width="0.03" height="0.22" depth="0.03" color="#4aaeff" opacity="0.78"></a-box>
+  <a-text position="-2.67 0.38 -3.02" value="-100" align="center" color="#4aaeff" scale="0.42 0.42 0.42"></a-text>
+
+  <a-box position="-4 0.15 -3.02" width="0.04" height="0.26" depth="0.04" color="#4aaeff" opacity="0.88"></a-box>
+  <a-text position="-4 0.40 -3.02" value="-150" align="center" color="#4aaeff" scale="0.42 0.42 0.42"></a-text>
+
+  <!-- Marcas derecha -->
+  <a-box position="1.33 0.15 -3.02" width="0.03" height="0.18" depth="0.03" color="#ff8844" opacity="0.75"></a-box>
+  <a-text position="1.33 0.36 -3.02" value="50" align="center" color="#ff8844" scale="0.42 0.42 0.42"></a-text>
+
+  <a-box position="2.67 0.15 -3.02" width="0.03" height="0.22" depth="0.03" color="#ff8844" opacity="0.78"></a-box>
+  <a-text position="2.67 0.38 -3.02" value="100" align="center" color="#ff8844" scale="0.42 0.42 0.42"></a-text>
+
+  <a-box position="4 0.15 -3.02" width="0.04" height="0.26" depth="0.04" color="#ff8844" opacity="0.88"></a-box>
+  <a-text position="4 0.40 -3.02" value="150" align="center" color="#ff8844" scale="0.42 0.42 0.42"></a-text>
+
+  <!-- Indicador actual -->
+  <a-ring id="indicador-balance" position="0 0.19 -3.02" radius-inner="0.06" radius-outer="0.10" color="#ffffff" opacity="0.95"></a-ring>
+</a-entity>
+
     <a-light type="point" position="0 2.5 -3" color="#aaaaff" intensity="0.6" distance="4"></a-light>
 
     <!-- Cuerda curva (segmentos generados por scene.js) -->
