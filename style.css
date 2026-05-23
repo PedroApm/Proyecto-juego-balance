@@ -287,6 +287,7 @@ body {
   width: min(800px, 96vw);
   max-height: calc(100svh - 56px);
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 32px 32px 28px;
   display: flex;
   flex-direction: column;
@@ -332,17 +333,19 @@ body {
 /* ─── Layout dos columnas ─── */
 .card-body {
   display: grid;
-  grid-template-columns: 1fr 1.05fr;
+  grid-template-columns: 1fr 1fr;
   gap: 0;
   align-items: stretch;
+  min-width: 0;
 }
 
 .card-left {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding-right: 28px;
+  padding-right: 24px;
   border-right: 1px solid rgba(255,255,255,0.07);
+  min-width: 0;
 }
 
 .card-left .info-juego {
@@ -350,9 +353,10 @@ body {
 }
 
 .card-right {
-  padding-left: 28px;
+  padding-left: 24px;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .card-glow {
@@ -689,6 +693,7 @@ body {
   flex-direction: column;
   gap: 16px;
   flex: 1;
+  min-width: 0;
 }
 
 .skin-label {
@@ -705,10 +710,12 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
 .carousel-viewport {
   flex: 1;
+  min-width: 0;
   overflow: hidden;
   border-radius: 20px;
 }
