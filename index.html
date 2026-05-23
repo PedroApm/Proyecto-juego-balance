@@ -49,69 +49,67 @@
 <div class="skin-selector">
   <p class="skin-label">Elige tu personaje</p>
 
-  <div class="skin-grid">
-    <button class="skin-card" data-skin="alien1" type="button">
-      <div class="skin-frame">
-        <img src="./assets/img/alien-1.png" alt="Alien 1" class="skin-preview">
-      </div>
-      <span class="skin-nombre">ALIEN 1</span>
+  <div class="skin-carousel">
+    <button class="carousel-arrow carousel-prev" id="carousel-prev" type="button" aria-label="Anterior">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
 
-    <button class="skin-card" data-skin="alien2" type="button">
-      <div class="skin-frame">
-        <img src="./assets/img/alien-2.png" alt="Alien 2" class="skin-preview">
+    <div class="carousel-viewport">
+      <div class="carousel-track" id="carousel-track">
+        <div class="skin-card" data-skin="alien1">
+          <div class="skin-frame"><img src="./assets/img/alien-1.png" alt="Alien 1" class="skin-preview"></div>
+          <span class="skin-nombre">ALIEN 1</span>
+        </div>
+        <div class="skin-card" data-skin="alien2">
+          <div class="skin-frame"><img src="./assets/img/alien-2.png" alt="Alien 2" class="skin-preview"></div>
+          <span class="skin-nombre">ALIEN 2</span>
+        </div>
+        <div class="skin-card" data-skin="alien3">
+          <div class="skin-frame"><img src="./assets/img/alien-3.png" alt="Alien 3" class="skin-preview"></div>
+          <span class="skin-nombre">ALIEN 3</span>
+        </div>
+        <div class="skin-card" data-skin="alien4">
+          <div class="skin-frame"><img src="./assets/img/alien-4.png" alt="Alien 4" class="skin-preview"></div>
+          <span class="skin-nombre">ALIEN 4</span>
+        </div>
+        <div class="skin-card" data-skin="astro1">
+          <div class="skin-frame"><img src="./assets/img/astro-1.png" alt="Astro 1" class="skin-preview"></div>
+          <span class="skin-nombre">ASTRO 1</span>
+        </div>
+        <div class="skin-card" data-skin="astro2">
+          <div class="skin-frame"><img src="./assets/img/astro-2.png" alt="Astro 2" class="skin-preview"></div>
+          <span class="skin-nombre">ASTRO 2</span>
+        </div>
+        <div class="skin-card" data-skin="astro3">
+          <div class="skin-frame"><img src="./assets/img/astro-3.png" alt="Astro 3" class="skin-preview"></div>
+          <span class="skin-nombre">ASTRO 3</span>
+        </div>
+        <div class="skin-card" data-skin="astro4">
+          <div class="skin-frame"><img src="./assets/img/astro-4.png" alt="Astro 4" class="skin-preview"></div>
+          <span class="skin-nombre">ASTRO 4</span>
+        </div>
+        <div class="skin-card" data-skin="astro5">
+          <div class="skin-frame"><img src="./assets/img/astro-5.png" alt="Astro 5" class="skin-preview"></div>
+          <span class="skin-nombre">ASTRO 5</span>
+        </div>
       </div>
-      <span class="skin-nombre">ALIEN 2</span>
-    </button>
+    </div>
 
-    <button class="skin-card" data-skin="alien3" type="button">
-      <div class="skin-frame">
-        <img src="./assets/img/alien-3.png" alt="Alien 3" class="skin-preview">
-      </div>
-      <span class="skin-nombre">ALIEN 3</span>
+    <button class="carousel-arrow carousel-next" id="carousel-next" type="button" aria-label="Siguiente">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
     </button>
+  </div>
 
-    <button class="skin-card" data-skin="alien4" type="button">
-      <div class="skin-frame">
-        <img src="./assets/img/alien-4.png" alt="Alien 4" class="skin-preview">
-      </div>
-      <span class="skin-nombre">ALIEN 4</span>
-    </button>
-
-    <button class="skin-card" data-skin="astro1" type="button">
-      <div class="skin-frame">
-        <img src="./assets/img/astro-1.png" alt="Astro 1" class="skin-preview">
-      </div>
-      <span class="skin-nombre">ASTRO 1</span>
-    </button>
-
-    <button class="skin-card" data-skin="astro2" type="button">
-      <div class="skin-frame">
-        <img src="./assets/img/astro-2.png" alt="Astro 2" class="skin-preview">
-      </div>
-      <span class="skin-nombre">ASTRO 2</span>
-    </button>
-
-    <button class="skin-card" data-skin="astro3" type="button">
-      <div class="skin-frame">
-        <img src="./assets/img/astro-3.png" alt="Astro 3" class="skin-preview">
-      </div>
-      <span class="skin-nombre">ASTRO 3</span>
-    </button>
-
-    <button class="skin-card" data-skin="astro4" type="button">
-      <div class="skin-frame">
-        <img src="./assets/img/astro-4.png" alt="Astro 4" class="skin-preview">
-      </div>
-      <span class="skin-nombre">ASTRO 4</span>
-    </button>
-
-    <button class="skin-card" data-skin="astro5" type="button">
-      <div class="skin-frame">
-        <img src="./assets/img/astro-5.png" alt="Astro 5" class="skin-preview">
-      </div>
-      <span class="skin-nombre">ASTRO 5</span>
-    </button>
+  <div class="carousel-dots" id="carousel-dots">
+    <span class="carousel-dot"></span>
+    <span class="carousel-dot"></span>
+    <span class="carousel-dot"></span>
+    <span class="carousel-dot"></span>
+    <span class="carousel-dot"></span>
+    <span class="carousel-dot"></span>
+    <span class="carousel-dot"></span>
+    <span class="carousel-dot"></span>
+    <span class="carousel-dot"></span>
   </div>
 </div>
 
@@ -124,18 +122,18 @@
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
       </button>
-      <div class="info-juego">
-  <p class="info-titulo">Instrucciones básicas</p>
+      <details class="info-juego">
+  <summary class="info-titulo">Instrucciones básicas</summary>
 
   <ul class="info-lista">
-    <li>Explora y cuadrar la escena con ⭥⮂ flechas o WASD segun su preferencia.</li>
+    <li>Explora la escena con flechas o WASD según tu preferencia.</li>
     <li>Escribe tu alias y elige un personaje para ingresar.</li>
     <li>Se necesitan mínimo 3 jugadores para iniciar la partida.</li>
     <li>Durante el juego, selecciona LEFT o RIGHT para sumar peso a tu lado.</li>
     <li>La partida dura 90 segundos.</li>
     <li>Gana el lado con más jugadores cuando el tiempo termina.</li>
   </ul>
-</div>
+</details>
 
       <p id="error-msg" class="error-msg oculto"></p>
     </div>
@@ -352,20 +350,40 @@
     let timerInterval       = null
     let ultimoDesplazamiento = 0
 
-    // ── Seleccion de skin ──
+    // ── Carrusel de skins ──
     const ALL_SKINS = ['alien1','alien2','alien3','alien4','astro1','astro2','astro3','astro4','astro5']
     let skinSeleccionado = localStorage.getItem('mySkin') || 'alien1'
     if (!ALL_SKINS.includes(skinSeleccionado)) skinSeleccionado = 'alien1'
 
-    document.querySelectorAll('.skin-card').forEach(card => {
-      if (card.dataset.skin === skinSeleccionado) card.classList.add('seleccionado')
-      card.addEventListener('click', () => {
-        skinSeleccionado = card.dataset.skin
-        localStorage.setItem('mySkin', skinSeleccionado)
-        document.querySelectorAll('.skin-card').forEach(c => c.classList.remove('seleccionado'))
-        card.classList.add('seleccionado')
-      })
+    let carouselIdx     = ALL_SKINS.indexOf(skinSeleccionado)
+    const carouselTrack = document.getElementById('carousel-track')
+    const carouselDots  = document.querySelectorAll('.carousel-dot')
+    const carouselCards = document.querySelectorAll('#carousel-track .skin-card')
+
+    function goToSkin(idx) {
+      carouselIdx = ((idx % ALL_SKINS.length) + ALL_SKINS.length) % ALL_SKINS.length
+      skinSeleccionado = ALL_SKINS[carouselIdx]
+      localStorage.setItem('mySkin', skinSeleccionado)
+      carouselTrack.style.transform = `translateX(-${carouselIdx * 100}%)`
+      carouselDots.forEach((d, i) => d.classList.toggle('activo', i === carouselIdx))
+      carouselCards.forEach((c, i) => c.classList.toggle('seleccionado', i === carouselIdx))
+    }
+
+    document.getElementById('carousel-prev').addEventListener('click', () => goToSkin(carouselIdx - 1))
+    document.getElementById('carousel-next').addEventListener('click', () => goToSkin(carouselIdx + 1))
+
+    // Soporte táctil / swipe
+    let _txStart = 0
+    carouselTrack.addEventListener('touchstart', e => { _txStart = e.touches[0].clientX }, { passive: true })
+    carouselTrack.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - _txStart
+      if (Math.abs(dx) > 40) goToSkin(carouselIdx + (dx < 0 ? 1 : -1))
     })
+
+    // Dots son clickeables
+    carouselDots.forEach((dot, i) => dot.addEventListener('click', () => goToSkin(i)))
+
+    goToSkin(carouselIdx)
 
     // Asigna skin a cada jugador antes de renderizar
     function agregarSkins(jugadores, offset) {
