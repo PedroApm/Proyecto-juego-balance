@@ -6,6 +6,10 @@ const ESFERA_R  = 30
 const ESFERA_CY = -30
 const ESFERA_CZ = -5
 
+const DESPLAZAMIENTO_MAX = 150;
+const REGLA_Y = 0.19;
+const REGLA_Z = -3.02;
+
 const SKINS_DEFAULT = ['alien1','alien2','alien3','alien4','astro1','astro2','astro3','astro4','astro5']
 
 function getSuperficieY(x, z) {
@@ -18,14 +22,33 @@ function anim(el, to, dur = 600) {
   el.setAttribute('animation__pos', { property: 'position', to, dur, easing: 'easeOutElastic' })
 }
 
-function construirCuerdaCurva(cx) {
+// desplazamiento a posición X visual 
+function mapearDesplazamientoAX(desplazamiento) {
+  const clamped = Math.max(-DESPLAZAMIENTO_MAX, Math.min(DESPLAZAMIENTO_MAX, desplazamiento))
+  return (clamped / DESPLAZAMIENTO_MAX) * 4
+}
+
+function construirCuerdaCurva(cx, desplazamiento = 0) {
   const grupo = document.getElementById('cuerda-group')
   if (!grupo) return
   while (grupo.firstChild) grupo.removeChild(grupo.firstChild)
 
-  const N  = 8
+  const N = 8
   const xA = cx - 4
   const xB = cx + 4
+
+  // NUEVO: intensidad visual según el desequilibrio
+  const fuerza = Math.min(1, Math.abs(desplazamiento) / DESPLAZAMIENTO_MAX)
+
+  // NUEVO: colores según lado dominante
+  const colorBase = '#d4a96a'
+  const colorLeft = '#4aaeff'
+  const colorRight = '#ff8844'
+
+  const colorDominante =
+    desplazamiento < 0 ? colorLeft :
+    desplazamiento > 0 ? colorRight :
+    colorBase
 
   for (let i = 0; i < N; i++) {
     const t1 = i / N
@@ -35,11 +58,11 @@ function construirCuerdaCurva(cx) {
     const y1 = getSuperficieY(x1, CUERDA_Z) + CUERDA_ALTURA
     const y2 = getSuperficieY(x2, CUERDA_Z) + CUERDA_ALTURA
 
-    const mx   = (x1 + x2) / 2
-    const my   = (y1 + y2) / 2
-    const dx   = x2 - x1
-    const dy   = y2 - y1
-    const len  = Math.sqrt(dx * dx + dy * dy)
+    const mx = (x1 + x2) / 2
+    const my = (y1 + y2) / 2
+    const dx = x2 - x1
+    const dy = y2 - y1
+    const len = Math.sqrt(dx * dx + dy * dy)
     const angZ = Math.atan2(dy, dx) * 180 / Math.PI
 
     const seg = document.createElement('a-cylinder')
@@ -47,7 +70,13 @@ function construirCuerdaCurva(cx) {
     seg.setAttribute('radius', '0.09')
     seg.setAttribute('height', (len + 0.01).toFixed(3))
     seg.setAttribute('rotation', `0 0 ${(90 + angZ).toFixed(2)}`)
-    seg.setAttribute('color', '#d4a96a')
+
+    // MODIFICADO: antes era color fijo '#d4a96a'
+    seg.setAttribute('color', colorDominante)
+
+    // NUEVO: la cuerda se ve más intensa con mayor desequilibrio
+    seg.setAttribute('opacity', String(0.82 + fuerza * 0.18))
+
     seg.setAttribute('roughness', '0.7')
     seg.setAttribute('metalness', '0.1')
     grupo.appendChild(seg)
@@ -57,7 +86,7 @@ function construirCuerdaCurva(cx) {
 export function actualizarCuerda(desplazamiento, tiempoRestante = null) {
   const cx = -desplazamiento / 75  // negado: más jugadores en LEFT → cuerda se va a la izquierda
 
-  construirCuerdaCurva(cx)
+    construirCuerdaCurva(cx, desplazamiento)
 
   const yL = getSuperficieY(cx - 4, CUERDA_Z) + CUERDA_ALTURA
   const yR = getSuperficieY(cx + 4, CUERDA_Z) + CUERDA_ALTURA
@@ -67,6 +96,9 @@ export function actualizarCuerda(desplazamiento, tiempoRestante = null) {
   anim(document.getElementById('texto-left-3d'),  `${cx - 4} ${(yL + 0.6).toFixed(3)} ${CUERDA_Z}`)
   anim(document.getElementById('texto-right-3d'), `${cx + 4} ${(yR + 0.6).toFixed(3)} ${CUERDA_Z}`)
 
+  const indicador = document.getElementById('indicador-balance')
+  const xIndicador = mapearDesplazamientoAX(desplazamiento)
+  
   const sonidoLeft  = document.getElementById('sonido-left')
   const sonidoRight = document.getElementById('sonido-right')
 
@@ -153,3 +185,4 @@ function renderizarFiguras(grupo, jugadores, dir) {
     grupo.appendChild(extra)
   }
 }
+
