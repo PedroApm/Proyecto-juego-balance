@@ -376,7 +376,7 @@
         conteoLeftEl.textContent   = izquierda.length
         conteoRightEl.textContent  = derecha.length
         desplVal.textContent       = `${d > 0 ? '+' : ''}${d}px`
-        desplVal.className         = d === 0 ? '' : d > 0 ? 'dom-left' : 'dom-right'
+        desplVal.className         = d === 0 ? '' : d < 0 ? 'dom-left' : 'dom-right'
         desplIcono.style.transform = `rotate(${d / 3}deg)`
 
         subLeft.textContent  = `${izquierda.length} jugador${izquierda.length !== 1 ? 'es' : ''}`
