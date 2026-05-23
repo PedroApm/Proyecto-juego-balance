@@ -745,7 +745,7 @@ body {
 .skin-label {
   font-family: var(--font-hud);
   font-size: 0.72rem;
-  color: rgba(255,255,255,0.62);
+  color: rgba(255,255,255,0.68);
   text-align: center;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -758,60 +758,74 @@ body {
 }
 
 .skin-card {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 7px;
-  min-height: 112px;
-  padding: 10px 6px 8px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%);
+  gap: 8px;
+  min-height: 120px;
+  padding: 10px 8px 9px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%);
   cursor: pointer;
-  transition: transform 0.18s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-  overflow: hidden;
+  transition: transform 0.18s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .skin-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(255,255,255,0.22);
-  background: linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.05) 100%);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+  border-color: rgba(255,255,255,0.18);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.22);
 }
 
-.skin-card.seleccionado {
-  border-color: rgba(74,174,255,0.9);
-  background: linear-gradient(180deg, rgba(74,174,255,0.18) 0%, rgba(74,174,255,0.08) 100%);
-  box-shadow:
-    0 0 0 1px rgba(74,174,255,0.18),
-    0 0 22px rgba(74,174,255,0.22),
-    inset 0 0 18px rgba(74,174,255,0.08);
+.skin-frame {
+  width: 58px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f7f7;
+  border-radius: 10px;
+  border: 1px solid rgba(15,20,40,0.08);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45);
+  overflow: hidden;
 }
 
 .skin-preview {
-  width: 62px;
-  height: 62px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   display: block;
-  pointer-events: none;
-  filter: drop-shadow(0 8px 14px rgba(0,0,0,0.28));
 }
 
 .skin-nombre {
-  font-size: 0.56rem;
-  color: rgba(255,255,255,0.72);
+  font-size: 0.58rem;
   font-family: var(--font-ui);
   font-weight: 700;
+  color: rgba(255,255,255,0.82);
   letter-spacing: 0.06em;
   text-align: center;
-  display: block;
-  line-height: 1.2;
+  line-height: 1.15;
+}
+
+.skin-card.seleccionado {
+  border-color: #4aaeff;
+  background: linear-gradient(180deg, rgba(74,174,255,0.16) 0%, rgba(74,174,255,0.07) 100%);
+  box-shadow:
+    0 0 0 1px rgba(74,174,255,0.16),
+    0 0 18px rgba(74,174,255,0.18),
+    inset 0 0 14px rgba(74,174,255,0.05);
+}
+
+.skin-card.seleccionado .skin-frame {
+  background: #ffffff;
+  border-color: rgba(74,174,255,0.35);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.65),
+    0 0 10px rgba(74,174,255,0.12);
 }
 
 .skin-card.seleccionado .skin-nombre {
-  color: #b9e0ff;
+  color: #cde8ff;
 }
 
 @media (max-width: 640px) {
@@ -821,17 +835,17 @@ body {
   }
 
   .skin-card {
-    min-height: 100px;
-    padding: 8px 4px 7px;
+    min-height: 112px;
+    padding: 9px 6px 8px;
   }
 
-  .skin-preview {
-    width: 52px;
-    height: 52px;
+  .skin-frame {
+    width: 54px;
+    height: 62px;
   }
 
   .skin-nombre {
-    font-size: 0.52rem;
+    font-size: 0.54rem;
   }
 }
 
