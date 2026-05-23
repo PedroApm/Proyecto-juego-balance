@@ -878,3 +878,45 @@ body {
   max-height: calc(100svh - 120px);
   overflow-y: auto;
 }
+
+
+.info-juego {
+  margin-top: 6px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.035);
+}
+
+.info-titulo {
+  font-family: var(--font-hud);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.72);
+  margin-bottom: 8px;
+}
+
+.info-lista {
+  margin: 0;
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.info-lista li {
+  font-size: 0.73rem;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.62);
+}
+
+@media (max-width: 640px) {
+  .info-juego {
+    padding: 10px 12px;
+  }
+
+  .info-lista li {
+    font-size: 0.7rem;
+  }
+}
